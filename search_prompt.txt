@@ -1,0 +1,311 @@
+# WEEKLY UK GOVERNMENT AI REPORT SCANNER
+
+**MISSION**: Search for substantial reports published in the past 7 days relevant to UK government AI transformation. Focus on reports that senior civil servants, DGs, and No10 would expect coordination teams to have read.
+
+**EXECUTION DATE**: {current_date}
+**SEARCH PERIOD**: {start_date} to {end_date}
+
+---
+
+## SEARCH STRATEGY
+
+### Phase 1: High-Priority Targeted Searches (60% of effort)
+
+**Frontier AI Labs** (Critical for government partnerships)
+- Search: "Anthropic research OR policy {date_range}"
+- Search: "OpenAI report OR publication {date_range}"
+- Search: "Google DeepMind research OR policy {date_range}"
+- Search: "Meta AI Llama OR research {date_range}"
+- Search: "Mistral AI report {date_range}"
+- Search: "Cohere enterprise AI {date_range}"
+
+**UK Government & Civil Service Context**
+- Search: "Institute for Government report {date_range}"
+- Search: "NAO National Audit Office report digital OR AI {date_range}"
+- Search: "Tony Blair Institute government AI {date_range}"
+- Search: "Reform think tank public sector {date_range}"
+- Search: "Public Accounts Committee report technology {date_range}"
+- Search: "DSIT Department Science Innovation Technology {date_range}"
+- Search: "Cabinet Office OR CDDO digital report {date_range}"
+
+**Key Think Tanks**
+- Search: "Ada Lovelace Institute AI {date_range}"
+- Search: "Bennett Institute public policy {date_range}"
+- Search: "Demos OR IPPR digital government {date_range}"
+- Search: "Alan Turing Institute AI government {date_range}"
+
+### Phase 2: Consultancy & International (30% of effort)
+
+**Management Consultancies**
+- Search: "McKinsey government AI OR public sector AI {date_range}"
+- Search: "Deloitte OR PwC OR Accenture government AI {date_range}"
+- Search: "BCG OR Bain public sector digital {date_range}"
+
+**International Organizations**
+- Search: "OECD AI governance report {date_range}"
+- Search: "EU AI Act OR European Commission AI {date_range}"
+- Search: "World Bank OR IMF digital government {date_range}"
+
+### Phase 3: Sector-Specific & Academic (10% of effort)
+
+**Sector Reports**
+- Search: "NHS AI OR health AI UK {date_range}"
+- Search: "education AI UK {date_range}"
+- Search: "local government AI UK {date_range}"
+
+**Academic Institutions**
+- Search: "Stanford HAI OR MIT CSAIL AI policy {date_range}"
+- Search: "Oxford Internet Institute OR Cambridge {date_range}"
+
+---
+
+## QUALITY FILTERS
+
+### ✅ INCLUDE if report:
+1. Published within search period (verify exact date)
+2. Substantial length (typically 20+ pages, or major announcement)
+3. From authoritative source
+4. Contains actionable insights, evidence, or frameworks
+5. Type: Research report, white paper, policy paper, working paper, committee report, major company announcement
+
+### ❌ EXCLUDE if:
+1. News article, blog post, press release (unless major policy announcement)
+2. Opinion piece or commentary
+3. Published outside date range
+4. Shorter than 10 pages (unless exceptionally relevant)
+5. Behind paywall without free summary
+6. Duplicate of previously tracked report
+
+---
+
+## RELEVANCE SCORING
+
+For each report, assign priority:
+
+### 🔥 **CRITICAL** - Read immediately
+- Direct impact on government AI initiatives
+- Evidence needed for senior briefings
+- Major UK government AI policy announcement
+- Frontier lab capability relevant to government use cases
+- Cross-government coordination insights
+
+### 📊 **HIGH** - Read this week
+- UK government transformation context
+- International AI governance frameworks
+- Major think tank analysis on public sector AI
+- Consultancy reports with quantifiable ROI data
+- Sector-specific adoption evidence (NHS, education, planning)
+
+### 📚 **MEDIUM** - Read when time allows
+- Academic research with policy implications
+- International case studies
+- Market intelligence on AI vendors
+- Sector reports from adjacent domains
+
+### 📋 **BACKGROUND** - Skim or archive
+- Tangentially relevant
+- Good for reference
+- Historical context
+
+---
+
+## OUTPUT FORMAT
+
+Generate TWO outputs:
+
+### Output 1: EXECUTIVE READING LIST
+
+```markdown
+# AI & Government Reports: Week of {date}
+
+## 🔥 CRITICAL - Read Immediately ({count} reports)
+
+### {Report Title}
+**Source**: {Organization} | **Published**: {Exact Date} | **Length**: {Pages}
+**Link**: {Direct URL}
+
+**Why Critical**: {1-2 sentences on why this must be read NOW}
+
+**Key Takeaways**:
+- {Finding 1 with specific data/evidence}
+- {Finding 2}
+- {Finding 3}
+
+**Relevance to Your Work**:
+- Government Initiatives: {specific relevance}
+- Frontier Labs: {specific relevance}
+- Cross-Gov Adoption: {specific relevance}
+- Departmental Engagement: {which departments, why}
+
+**Actionable Insights**: {What can be done with this information}
+
+**Quote to Remember**: "{Most impactful quote for briefings}"
+
+---
+
+## 📊 HIGH PRIORITY - Read This Week ({count} reports)
+
+[Same format as above, slightly condensed]
+
+---
+
+## 📚 MEDIUM PRIORITY ({count} reports)
+
+[Condensed format: Title, source, 2-3 sentence summary, link]
+
+---
+
+## WEEKLY SYNTHESIS
+
+### Cross-Cutting Themes
+{3-5 major themes across all reports this week}
+
+### Evidence for Current Initiatives
+**Government AI Programs**: {Relevant evidence from reports}
+**Frontier Lab Partnerships**: {Relevant evidence}
+**Cross-Gov Knowledge Sharing**: {Relevant evidence}
+**Sectoral Exemplars**: {Relevant evidence}
+
+### International Positioning
+{Where is UK ahead/behind? What are other countries doing?}
+
+### Gaps & Questions
+{What questions do these reports raise? What needs more investigation?}
+
+### Senior Briefing Angles
+{Top 3 insights suitable for senior stakeholder briefings}
+
+### Next Week's Watch List
+{Expected publications, ongoing inquiries, announced reports}
+```
+
+### Output 2: NOTEBOOKLM PODCAST SOURCE (structured for audio summary)
+
+```markdown
+# NotebookLM Source Document: AI & Gov Reports Week of {date}
+
+## Introduction
+This week's digest covers {count} major reports on government AI transformation, with particular focus on {top 3 themes}. Key developments include {headline findings}.
+
+## Critical Report 1: {Title}
+
+**Context**: {Who published this, why it matters, who should care}
+
+**Main Argument**: {The core thesis in 2-3 sentences}
+
+**Key Evidence**:
+- Data point 1: {Specific statistic with context}
+- Data point 2: {Specific finding}
+- Data point 3: {Specific recommendation}
+
+**Why This Matters for UK Government AI**:
+{Explain implications for government AI strategy, procurement, adoption}
+
+**Surprising Finding**: {Most unexpected or counterintuitive insight}
+
+**Debate Points**: {Areas of controversy or differing perspectives}
+
+**Quote**: "{Impactful quote that captures essence}"
+
+---
+
+[Repeat for each Critical and High Priority report]
+
+---
+
+## Synthesis Across Reports
+
+**Convergence**: {Where multiple reports agree}
+
+**Contradictions**: {Where reports disagree or present tensions}
+
+**Emerging Patterns**: {New trends visible across multiple sources}
+
+**UK-Specific Implications**: {What does this mean for UK government specifically}
+
+**Action Items for Government Leaders**:
+1. {Actionable takeaway 1}
+2. {Actionable takeaway 2}
+3. {Actionable takeaway 3}
+
+## Discussion Questions
+
+1. {Question that would make good podcast discussion}
+2. {Question connecting multiple reports}
+3. {Question about UK government response}
+```
+
+---
+
+## SEARCH EXECUTION GUIDELINES
+
+### Use Web Search Tool Efficiently
+
+- Start with 20-30 targeted searches (not exhaustive)
+- Follow promising leads (if initial search reveals major report)
+- Verify publication dates by visiting actual report pages
+- Get direct links to PDFs/full reports (not news coverage)
+
+### When You Find Something Promising:
+
+1. Navigate to source organization's website
+2. Check their "Publications" or "Research" section
+3. Verify exact publication date
+4. Download or link to full report (PDF preferred)
+5. Skim executive summary and key findings
+6. Extract 3-5 most relevant data points
+
+### Common Pitfalls to Avoid:
+
+- Don't confuse news articles ABOUT reports with actual reports
+- Don't include webinars, podcasts, or events (unless substantial written output)
+- Don't rely on publication lists alone - verify each report exists
+- Don't include reports published before search period even if just discovered
+
+### Time Management:
+
+- Spend 2-3 hours on comprehensive search
+- Aim for 15-25 quality reports total
+- Prioritize depth over breadth
+- Better to have 8 excellent reports than 30 mediocre ones
+
+---
+
+## ERROR HANDLING
+
+If you cannot verify publication date:
+→ Note "Publication date uncertain - appears to be {approximate date}" and flag for manual review
+
+If report is behind paywall:
+→ Include with note "Paywall - executive summary available at {link}"
+
+If source is in foreign language:
+→ Include only if English summary/translation available
+
+If search yields few results:
+→ Expand date range by 3-4 days or include "late-breaking" reports from previous week
+
+---
+
+## FINAL CHECKS BEFORE OUTPUT
+
+✅ All publication dates verified and within range
+✅ All links direct to actual reports (not news articles)
+✅ Priority scores align with government responsibilities
+✅ Actionable insights included for Critical/High priority reports
+✅ No duplicates of previously covered reports
+✅ NotebookLM source is narrative and podcast-friendly
+✅ Executive summary includes cross-cutting synthesis
+✅ Sufficient detail for each report (not just titles and links)
+
+---
+
+## METADATA TO TRACK
+
+For each search execution, log:
+
+- Total reports found: {count}
+- By priority: Critical {X}, High {Y}, Medium {Z}
+- By source type: Think tanks {X}, Government {Y}, Consultancy {Z}, Frontier AI {W}
+- Search time: {hours}
+- Coverage confidence: {High/Medium/Low}
