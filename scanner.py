@@ -75,14 +75,17 @@ class ReportScanner:
             return f.read()
 
     def _format_prompt(self, template: str, current_date: str, start_date: str, end_date: str) -> str:
-        """Format prompt with dates"""
+        """Format prompt with dates using safe string replacement"""
         date_range = f"{start_date} to {end_date}"
-        return template.format(
-            current_date=current_date,
-            start_date=start_date,
-            end_date=end_date,
-            date_range=date_range
-        )
+
+        # Use string replacement to avoid conflicts with Claude's output template placeholders
+        template = template.replace("{current_date}", current_date)
+        template = template.replace("{start_date}", start_date)
+        template = template.replace("{end_date}", end_date)
+        template = template.replace("{date_range}", date_range)
+        template = template.replace("{date}", current_date)
+
+        return template
 
     def generate_report(self) -> Dict[str, any]:
         """

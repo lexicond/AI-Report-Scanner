@@ -26,7 +26,8 @@ Stop spending hours searching for relevant AI reports. Get a curated weekly dige
 
 - Python 3.11 or higher
 - [Anthropic API key](https://console.anthropic.com)
-- Gmail account (for email notifications)
+- ~~Gmail account~~ **Email is OPTIONAL** - reports saved locally to `reports/` folder
+  - See [EMAIL_GUIDE.md](EMAIL_GUIDE.md) for email alternatives
 
 ### Installation
 
@@ -90,19 +91,26 @@ Step-by-step instructions for:
 Edit `.env` file:
 
 ```bash
-# Required
+# REQUIRED
 ANTHROPIC_API_KEY=your_anthropic_api_key_here
-SENDER_EMAIL=your-email@gmail.com
-RECIPIENT_EMAIL=recipient@example.com
-EMAIL_PASSWORD=your_gmail_app_password
 
-# Optional
-SLACK_TOKEN=xoxb-your-slack-bot-token
-SLACK_CHANNEL=#ai-reports
+# OPTIONAL: Email (Leave blank to use local files only)
+# See EMAIL_GUIDE.md for alternatives
+#SENDER_EMAIL=your-email@gmail.com
+#RECIPIENT_EMAIL=recipient@example.com
+#EMAIL_PASSWORD=your_gmail_app_password
+
+# OPTIONAL: Slack
+#SLACK_TOKEN=xoxb-your-slack-bot-token
+#SLACK_CHANNEL=#ai-reports
+
+# Settings
 LOG_LEVEL=INFO
 DRY_RUN=false
 SEARCH_DAYS_BACK=7
 ```
+
+> 💡 **Email is optional!** Reports are always saved to `reports/` folder. Email just delivers them automatically. See [EMAIL_GUIDE.md](EMAIL_GUIDE.md) for setup help or alternatives.
 
 ### 4. Test Locally
 

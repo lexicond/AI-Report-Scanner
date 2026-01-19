@@ -66,8 +66,8 @@ class TestReportScanner:
             pass
 
     def test_format_prompt(self, scanner):
-        """Test prompt formatting with dates"""
-        template = "Date: {current_date}, Range: {start_date} to {end_date}, Period: {date_range}"
+        """Test prompt formatting with dates using string replacement"""
+        template = "Date: {current_date}, Range: {start_date} to {end_date}, Period: {date_range}, Week: {date}"
         formatted = scanner._format_prompt(
             template,
             "2024-01-15",
@@ -78,6 +78,12 @@ class TestReportScanner:
         assert "2024-01-15" in formatted
         assert "2024-01-08" in formatted
         assert "2024-01-08 to 2024-01-15" in formatted
+        # Verify {date} is replaced (used in template)
+        assert "{date}" not in formatted
+        # Verify other placeholders like {count} for Claude are NOT replaced
+        template_with_claude_vars = "Date: {current_date}, Count: {count}"
+        formatted2 = scanner._format_prompt(template_with_claude_vars, "2024-01-15", "2024-01-08", "2024-01-15")
+        assert "{count}" in formatted2  # Claude's placeholder should remain
 
     def test_generate_mock_report(self, scanner):
         """Test mock report generation (dry run)"""

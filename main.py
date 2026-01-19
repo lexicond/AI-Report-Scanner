@@ -132,7 +132,9 @@ def main():
                 print(f"❌ Email error: {e}")
         else:
             logger.info("Email not configured, skipping")
-            print("ℹ️  Email not configured (set SENDER_EMAIL, RECIPIENT_EMAIL, EMAIL_PASSWORD)")
+            print("ℹ️  Email not configured - reports saved locally to reports/ folder")
+            print("   To enable email: Set SENDER_EMAIL, RECIPIENT_EMAIL, EMAIL_PASSWORD")
+            print("   Alternative: Check reports/ folder for markdown files")
 
         # Slack notification
         if settings.validate_required_for_slack():
@@ -157,10 +159,18 @@ def main():
     print("✅ AI Report Scanner completed successfully!")
     print("=" * 70)
     print()
+    print("📁 Your reports are ready:")
+    print(f"   📄 Reading List: reports/reading_list_{report['generated_at']}.md")
+    if report['notebooklm_source']:
+        print(f"   🎙️  NotebookLM: reports/notebooklm_{report['generated_at']}.md")
+    print()
     print("Next steps:")
-    print("1. Review the reading list in reports/")
+    print("1. Open reports/ folder to read your curated report")
     print("2. Upload notebooklm_*.md to NotebookLM for audio summary")
-    print("3. Check your email for the digest")
+    if settings.validate_required_for_email():
+        print("3. Check your email for the digest")
+    else:
+        print("3. Optional: Configure email to receive automatic delivery")
     print()
 
     return 0
