@@ -10,3 +10,5 @@ pydantic-settings==2.1.0
 markdown==3.5.1
 beautifulsoup4==4.12.2
 lxml==5.1.0
+slack-sdk==3.27.0
+sendgrid==6.11.0

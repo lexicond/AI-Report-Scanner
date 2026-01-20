@@ -19,7 +19,7 @@ class NotificationService:
 
     def send_email(self, report: Dict, attachments: Optional[list] = None) -> bool:
         """
-        Send report via email
+        Send report via email (SMTP or SendGrid)
 
         Args:
             report: Report dictionary with reading_list, notebooklm_source, metadata
@@ -32,6 +32,15 @@ class NotificationService:
             self.logger.error("Email configuration incomplete")
             return False
 
+        # Use SendGrid if configured (works better on Railway)
+        if self.settings.use_sendgrid():
+            return self._send_via_sendgrid(report, attachments)
+
+        # Otherwise use SMTP
+        return self._send_via_smtp(report, attachments)
+
+    def _send_via_smtp(self, report: Dict, attachments: Optional[list] = None) -> bool:
+        """Send email via SMTP (Gmail, etc.)"""
         try:
             # Create message
             msg = MIMEMultipart("alternative")
@@ -71,6 +80,60 @@ class NotificationService:
             return False
         except Exception as e:
             self.logger.error(f"Error sending email: {e}")
+            return False
+
+    def _send_via_sendgrid(self, report: Dict, attachments: Optional[list] = None) -> bool:
+        """Send email via SendGrid API (works on Railway)"""
+        try:
+            from sendgrid import SendGridAPIClient
+            from sendgrid.helpers.mail import Mail, Email, To, Content, Attachment
+            import base64
+
+            self.logger.info("Sending email via SendGrid...")
+
+            # Create email content
+            text_content = self._format_email_text(report)
+            html_content = self._format_email_html(report)
+
+            # Create message
+            message = Mail(
+                from_email=Email(self.settings.sendgrid_from_email),
+                to_emails=To(self.settings.recipient_email),
+                subject=f"📊 Weekly AI Reports Digest - {report['generated_at']}",
+                plain_text_content=Content("text/plain", text_content),
+                html_content=Content("text/html", html_content)
+            )
+
+            # Add attachments if provided
+            if attachments:
+                for file_path in attachments:
+                    path = Path(file_path)
+                    if path.exists():
+                        with open(path, 'rb') as f:
+                            data = f.read()
+                            encoded = base64.b64encode(data).decode()
+
+                            attachment = Attachment()
+                            attachment.file_content = encoded
+                            attachment.file_name = path.name
+                            attachment.file_type = "text/markdown"
+                            attachment.disposition = "attachment"
+
+                            message.add_attachment(attachment)
+                            self.logger.info(f"Attached file: {path.name}")
+
+            # Send via SendGrid
+            sg = SendGridAPIClient(self.settings.sendgrid_api_key)
+            response = sg.send(message)
+
+            self.logger.info(f"SendGrid email sent successfully to {self.settings.recipient_email}")
+            return True
+
+        except ImportError:
+            self.logger.error("sendgrid library not installed. Run: pip install sendgrid")
+            return False
+        except Exception as e:
+            self.logger.error(f"SendGrid error: {e}")
             return False
 
     def _format_email_text(self, report: Dict) -> str:
