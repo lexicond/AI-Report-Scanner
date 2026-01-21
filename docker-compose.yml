@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  scanner:
+    build: .
+    container_name: ai-report-scanner
+    env_file:
+      - .env
+    volumes:
+      - ./output:/app/output
+      - ./reports:/app/reports
+      - ./logs:/app/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import sys; sys.exit(0)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
+
+  # Optional: Scheduled execution using cron container
+  cron:
+    image: alpine:latest
+    container_name: ai-report-scanner-cron
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./cron-script.sh:/cron-script.sh
+    command: |
+      sh -c "echo '0 9 * * 1 /cron-script.sh' > /etc/crontabs/root && crond -f -l 2"
+    restart: unless-stopped
