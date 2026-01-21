@@ -1,11 +1,13 @@
-# WEEKLY UK GOVERNMENT AI REPORT SCANNER
+# MONTHLY UK GOVERNMENT AI REPORT SCANNER
 
 **CRITICAL INSTRUCTION**: You MUST use the web_search tool to actively search for reports. Do NOT explain that you cannot search - you have web search capability enabled. Execute all searches listed below using the web_search tool.
 
-**MISSION**: Search for substantial reports published in the past 7 days relevant to UK government AI transformation. Focus on reports that senior civil servants, DGs, and No10 would expect coordination teams to have read.
+**MISSION**: Search for substantial reports published in the past 30 days relevant to UK government AI transformation. Focus ONLY on the BEST and MOST IMPORTANT reports - those that senior civil servants, DGs, and No10 would expect coordination teams to have read.
+
+**SELECTION CRITERIA**: With monthly scanning, be HIGHLY SELECTIVE. Aim for 10-15 exceptional reports, not 25+ mediocre ones. Quality over quantity. Only include reports that are truly significant, actionable, and relevant.
 
 **EXECUTION DATE**: {current_date}
-**SEARCH PERIOD**: {start_date} to {end_date}
+**SEARCH PERIOD**: {start_date} to {end_date} (30 days)
 
 ---
 
@@ -61,53 +63,69 @@
 
 ---
 
-## QUALITY FILTERS
+## QUALITY FILTERS (MONTHLY = MORE SELECTIVE)
 
-### ✅ INCLUDE if report:
+### ✅ INCLUDE ONLY if report:
 1. Published within search period (verify exact date)
-2. Substantial length (typically 20+ pages, or major announcement)
-3. From authoritative source
-4. Contains actionable insights, evidence, or frameworks
-5. Type: Research report, white paper, policy paper, working paper, committee report, major company announcement
+2. **Substantial and significant** (30+ pages for research, or major policy announcement)
+3. From **highly authoritative** source (government, major labs, leading think tanks)
+4. Contains **actionable, evidence-based insights** with clear recommendations
+5. Type: Major research report, policy paper, government report, landmark announcement
+6. **Would be discussed** in senior government meetings or No10 briefings
+7. **High impact** - changes the conversation or provides critical evidence
 
-### ❌ EXCLUDE if:
-1. News article, blog post, press release (unless major policy announcement)
-2. Opinion piece or commentary
+### ❌ EXCLUDE (stricter for monthly):
+1. News articles, blog posts, press releases (even if substantive)
+2. Opinion pieces, commentary, analysis pieces
 3. Published outside date range
-4. Shorter than 10 pages (unless exceptionally relevant)
-5. Behind paywall without free summary
-6. Duplicate of previously tracked report
+4. Shorter than 20 pages (unless truly groundbreaking)
+5. Behind paywall without comprehensive free summary
+6. Duplicate or minor update of previous report
+7. **Routine/incremental** reports without significant new insights
+8. **Regional/local** reports unless major national implications
+9. **Niche academic** papers without clear policy relevance
+
+### 🎯 MONTHLY SELECTION PRIORITIES
+
+**For monthly scans, ONLY include reports that:**
+- Would be referenced in a ministerial briefing
+- Represent major shifts in AI landscape
+- Contain critical evidence for policy decisions
+- Come from institutions that shape government thinking
+- Have cross-government relevance (not single department)
+
+**Ask yourself: "If I could only share 10-15 reports this month, would this make the cut?"**
 
 ---
 
-## RELEVANCE SCORING
+## RELEVANCE SCORING (ADJUSTED FOR MONTHLY)
 
-For each report, assign priority:
+### 🔥 **CRITICAL** - Must read this month (aim for 3-5 reports)
+- Direct impact on major government AI initiatives
+- Evidence needed for No10/ministerial briefings
+- Major UK government AI policy change or announcement
+- Frontier lab breakthrough with government applications
+- Cross-government strategic implications
+- **Would be emailed to Permanent Secretaries**
 
-### 🔥 **CRITICAL** - Read immediately
-- Direct impact on government AI initiatives
-- Evidence needed for senior briefings
-- Major UK government AI policy announcement
-- Frontier lab capability relevant to government use cases
-- Cross-government coordination insights
+### 📊 **HIGH** - Read this month (aim for 5-8 reports)
+- Substantial UK government transformation insights
+- Major international AI governance developments
+- Leading think tank comprehensive analysis
+- Consultancy reports with robust evidence and case studies
+- Sector-specific reports with cross-sector lessons
+- **Would be discussed in DG meetings**
 
-### 📊 **HIGH** - Read this week
-- UK government transformation context
-- International AI governance frameworks
-- Major think tank analysis on public sector AI
-- Consultancy reports with quantifiable ROI data
-- Sector-specific adoption evidence (NHS, education, planning)
+### 📚 **MEDIUM** - Useful context (aim for 2-3 reports maximum)
+- Important academic research with clear policy paths
+- International exemplars worth studying
+- Market intelligence on major platforms
+- **Include sparingly - only if exceptional**
 
-### 📚 **MEDIUM** - Read when time allows
-- Academic research with policy implications
-- International case studies
-- Market intelligence on AI vendors
-- Sector reports from adjacent domains
-
-### 📋 **BACKGROUND** - Skim or archive
-- Tangentially relevant
-- Good for reference
-- Historical context
+### 📋 **BACKGROUND** - EXCLUDE from monthly digest
+- Don't include background reports in monthly digest
+- Monthly is for high-signal, high-value only
+- **If it's "background", it doesn't make the cut**
 
 ---
 
@@ -118,9 +136,12 @@ Generate TWO outputs:
 ### Output 1: EXECUTIVE READING LIST
 
 ```markdown
-# AI & Government Reports: Week of {date}
+# AI & Government Reports: Month of {date}
 
-## 🔥 CRITICAL - Read Immediately ({count} reports)
+**Period**: {start_date} to {end_date}
+**Total Reports**: {count} (curated from 30-day search)
+
+## 🔥 CRITICAL - Must Read This Month ({count} reports)
 
 ### {Report Title}
 **Source**: {Organization} | **Published**: {Exact Date} | **Length**: {Pages}
@@ -145,7 +166,7 @@ Generate TWO outputs:
 
 ---
 
-## 📊 HIGH PRIORITY - Read This Week ({count} reports)
+## 📊 HIGH PRIORITY - Read This Month ({count} reports)
 
 [Same format as above, slightly condensed]
 
@@ -157,10 +178,10 @@ Generate TWO outputs:
 
 ---
 
-## WEEKLY SYNTHESIS
+## MONTHLY SYNTHESIS
 
 ### Cross-Cutting Themes
-{3-5 major themes across all reports this week}
+{3-5 major themes across all reports this month}
 
 ### Evidence for Current Initiatives
 **Government AI Programs**: {Relevant evidence from reports}
@@ -177,17 +198,17 @@ Generate TWO outputs:
 ### Senior Briefing Angles
 {Top 3 insights suitable for senior stakeholder briefings}
 
-### Next Week's Watch List
+### Next Month's Watch List
 {Expected publications, ongoing inquiries, announced reports}
 ```
 
 ### Output 2: NOTEBOOKLM PODCAST SOURCE (structured for audio summary)
 
 ```markdown
-# NotebookLM Source Document: AI & Gov Reports Week of {date}
+# NotebookLM Source Document: AI & Gov Reports Month of {date}
 
 ## Introduction
-This week's digest covers {count} major reports on government AI transformation, with particular focus on {top 3 themes}. Key developments include {headline findings}.
+This month's digest covers {count} major reports on government AI transformation, carefully curated from a 30-day search. The focus is on {top 3 themes}. Key developments include {headline findings}.
 
 ## Critical Report 1: {Title}
 
@@ -285,7 +306,8 @@ If source is in foreign language:
 → Include only if English summary/translation available
 
 If search yields few results:
-→ Expand date range by 3-4 days or include "late-breaking" reports from previous week
+→ This is acceptable for monthly scans - we want quality over quantity
+→ 10-15 exceptional reports is better than 25 mediocre ones
 
 ---
 

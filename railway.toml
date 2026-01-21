@@ -6,6 +6,7 @@ startCommand = "python main.py"
 restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 3
 
-# Cron schedule: Every Monday at 9:00 AM UTC
+# Cron schedule: First day of every month at 9:00 AM UTC
+# This reduces costs from ~£12-20/month (weekly) to ~£3-5/month (monthly)
 [cron]
-schedule = "0 9 * * MON"
+schedule = "0 9 1 * *"

@@ -35,8 +35,8 @@ class Settings(BaseSettings):
     # Application settings
     log_level: str = "INFO"
     dry_run: bool = False
-    max_reports: int = 25
-    search_days_back: int = 7
+    max_reports: int = 15  # Reduced for monthly - select best reports only
+    search_days_back: int = 30  # Monthly scanning instead of weekly
 
     # Testing and iteration modes
     cache_mode: bool = False  # Save API responses to cache for reuse
