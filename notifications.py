@@ -345,44 +345,72 @@ Search Period: Last 30 days
             return False
 
     def _extract_summary(self, reading_list: str, max_length: int = 2800) -> str:
-        """Extract summary from reading list for Slack"""
-        # Try to find the critical section with different possible markers
-        critical_markers = ["## 🔥 CRITICAL", "## CRITICAL", "# 🔥 CRITICAL", "## 🔥"]
+        """Extract summary from reading list for Slack - newsletter format"""
 
+        # Strategy 1: Extract Executive Summary + Critical Section (preferred)
+        if "## 📰 EXECUTIVE SUMMARY" in reading_list:
+            # Get everything from header through to end of CRITICAL section
+            parts = reading_list.split("## 📰 EXECUTIVE SUMMARY", 1)
+            if len(parts) > 1:
+                # Include executive summary and critical reports
+                summary_part = "## 📰 EXECUTIVE SUMMARY" + parts[1]
+
+                # Cut at HIGH PRIORITY or WORTH NOTING section
+                for end_marker in ["## 📊 HIGH PRIORITY", "## 📚 WORTH NOTING", "## 🧭 MONTHLY SYNTHESIS"]:
+                    if end_marker in summary_part:
+                        summary_part = summary_part.split(end_marker)[0]
+                        break
+
+                # Trim to max length
+                if len(summary_part) > max_length:
+                    summary_part = summary_part[:max_length] + "\n\n_[View full report in email or reports folder]_"
+
+                return summary_part
+
+        # Strategy 2: Look for traditional CRITICAL section
+        critical_markers = ["## 🔥 CRITICAL", "## CRITICAL", "# 🔥 CRITICAL"]
         for marker in critical_markers:
             if marker in reading_list:
                 parts = reading_list.split(marker, 1)
                 if len(parts) > 1:
-                    # Get critical section up to next major heading
+                    # Get everything from start through critical section
+                    # Include header if present
+                    header = parts[0] if len(parts[0]) < 500 else ""
                     critical_section = parts[1]
-                    # Split by next section marker
-                    for next_marker in ["## 📊", "## 📚", "## HIGH", "## MEDIUM", "## Summary"]:
+
+                    # Stop at next major section
+                    for next_marker in ["## 📊 HIGH", "## 📚", "## MEDIUM", "## 🧭"]:
                         if next_marker in critical_section:
                             critical_section = critical_section.split(next_marker)[0]
                             break
 
-                    summary = f"{marker}{critical_section[:max_length]}"
+                    summary = header + marker + critical_section
 
-                    # If we have room, add a preview of HIGH priority too
-                    if len(summary) < max_length - 500:
-                        if "## 📊 HIGH" in reading_list or "## HIGH" in reading_list:
-                            high_marker = "## 📊 HIGH" if "## 📊 HIGH" in reading_list else "## HIGH"
-                            high_parts = reading_list.split(high_marker, 1)
-                            if len(high_parts) > 1:
-                                high_preview = high_parts[1][:500]
-                                summary += f"\n\n{high_marker}{high_preview}..."
+                    if len(summary) > max_length:
+                        summary = summary[:max_length] + "\n\n_[Continued in full report...]_"
 
                     return summary
 
-        # Fallback: Show first 2800 characters with report count
+        # Strategy 3: Fallback - Get header + first meaningful content
+        # Skip any preamble text (like "I'll execute searches")
         lines = reading_list.split('\n')
         summary_lines = []
         char_count = 0
+        started = False
 
-        for line in lines[:50]:  # First 50 lines
-            if char_count + len(line) > max_length:
-                break
-            summary_lines.append(line)
-            char_count += len(line)
+        for line in lines:
+            # Start collecting after we see the newsletter header
+            if line.startswith('# AI & Government Reports') or line.startswith('## 📰'):
+                started = True
 
-        return '\n'.join(summary_lines) + "\n\n_[Full report attached to email or check reports folder]_"
+            if started:
+                if char_count + len(line) > max_length:
+                    break
+                summary_lines.append(line)
+                char_count += len(line) + 1  # +1 for newline
+
+        if summary_lines:
+            return '\n'.join(summary_lines) + "\n\n_[Full monthly digest in email]_"
+
+        # Last resort: Just take beginning (shouldn't happen with new format)
+        return reading_list[:max_length] + "\n\n_[Full report in email]_"
