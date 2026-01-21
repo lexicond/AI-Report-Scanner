@@ -1,4 +1,4 @@
-"""Core AI Report Scanner - Weekly report generation with Claude"""
+"""Core AI Report Scanner - Monthly report generation with Claude"""
 import anthropic
 import json
 import logging
@@ -9,7 +9,7 @@ from config import Settings
 
 
 class ReportScanner:
-    """Automated weekly AI report scanning using Claude"""
+    """Automated monthly AI report scanning using Claude"""
 
     def __init__(self, settings: Settings):
         self.settings = settings
@@ -89,12 +89,12 @@ class ReportScanner:
 
     def generate_report(self) -> Dict[str, any]:
         """
-        Main method to generate weekly report using Claude
+        Main method to generate monthly report using Claude
 
         Returns:
             Dict with reading_list, notebooklm_source, metadata
         """
-        self.logger.info("Starting weekly report generation")
+        self.logger.info("Starting monthly report generation")
 
         # Calculate dates
         today, start_date, end_date = self._calculate_date_range()

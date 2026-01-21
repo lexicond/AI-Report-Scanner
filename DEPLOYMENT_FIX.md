@@ -104,12 +104,12 @@ cat reports/reading_list_*.md
 **Expected output:**
 ```
 ======================================================================
-🤖 AI Report Scanner - Weekly Government AI Report Curation
+🤖 AI Report Scanner - Monthly Government AI Report Curation
 ======================================================================
 
 Configuration loaded successfully
 Mode: PRODUCTION
-Search period: Last 7 days
+Search period: Last 30 days
 
 🔍 Searching for reports...
 This may take a few minutes...

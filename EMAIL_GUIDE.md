@@ -138,9 +138,77 @@ Don't like email at all? Use Slack!
 - ✅ Mobile notifications
 - ✅ No email passwords
 
+**⚠️ Important for Slack:**
+- Don't use placeholder tokens like `xoxb-your-slack-bot-token`
+- Real tokens are much longer and contain actual numbers/letters
+- Example format: `xoxb-NUMBERS-NUMBERS-LETTERS` (starts with xoxb- followed by long string)
+
 ---
 
-## Option 5: File-Based Workflows
+## Option 5: SendGrid (Railway-Compatible Email)
+
+**Use this if deploying to Railway or other cloud platforms where Gmail SMTP is blocked.**
+
+### Why SendGrid?
+
+Railway (and most cloud platforms) **block outbound SMTP connections** to prevent spam. Gmail SMTP won't work and you'll see errors like:
+```
+Error sending email: [Errno 101] Network is unreachable
+```
+
+SendGrid uses an API instead of SMTP, so it works perfectly on Railway. **Free tier: 100 emails/day**.
+
+### Setup from iPhone/Web:
+
+1. **Create SendGrid Account**
+   - Go to: https://signup.sendgrid.com
+   - Sign up and verify your email
+   - Choose "I'm a developer" when asked
+
+2. **Create API Key**
+   - Settings (gear icon) → API Keys
+   - Click "Create API Key"
+   - Name: `AI Report Scanner`
+   - Permissions: **Full Access** (or minimum "Mail Send")
+   - **Copy the key** (starts with `SG.`) - you only see this once!
+
+3. **Verify Sender Email**
+   - Settings → Sender Authentication
+   - "Verify a Single Sender"
+   - Fill in details:
+     - From Name: `AI Report Scanner`
+     - From Email: `your-email@gmail.com` (any email you own)
+     - Reply To: Same email
+   - Check your email and click verification link
+
+4. **Configure .env or Railway Variables:**
+   ```bash
+   SENDGRID_API_KEY=SG.your-api-key-here
+   SENDGRID_FROM_EMAIL=your-verified-email@gmail.com
+   RECIPIENT_EMAIL=your-email@gmail.com
+   ```
+
+5. **Remove old SMTP variables** (if present):
+   - Remove `EMAIL_PASSWORD`
+   - Remove `SENDER_EMAIL` (replaced by `SENDGRID_FROM_EMAIL`)
+
+**Advantages:**
+- ✅ Works on Railway and all cloud platforms
+- ✅ Free tier (100 emails/day)
+- ✅ Professional delivery
+- ✅ Detailed analytics
+
+**Disadvantages:**
+- ⚠️ Requires signup and verification
+- ⚠️ Need to verify sender email first
+
+**Troubleshooting:**
+- **"Invalid API key"**: Copy full key including `SG.` prefix, no extra spaces
+- **"Sender not verified"**: Check email for verification link from SendGrid
+
+---
+
+## Option 6: File-Based Workflows
 
 ### A. Automatic File Sync
 
@@ -205,6 +273,33 @@ Use Notion's email-to-page feature:
 
 ---
 
+## Railway/Cloud Platform Specific
+
+### Why Gmail SMTP Doesn't Work on Railway
+
+Railway (and similar platforms like Heroku, Render) **block outbound SMTP connections** on ports 465 and 587 to prevent spam abuse. This is normal and expected.
+
+**Error you'll see:**
+```
+Error sending email: [Errno 101] Network is unreachable
+```
+
+**Solutions that WORK on Railway:**
+- ✅ SendGrid API (see Option 5 above)
+- ✅ Mailgun API
+- ✅ Postmark API
+- ✅ AWS SES API
+- ✅ Slack (see Option 4 above)
+
+**Won't work on Railway:**
+- ❌ Gmail SMTP
+- ❌ Outlook SMTP
+- ❌ Most direct SMTP connections
+
+**Recommendation:** Use **Slack** (easiest) or **SendGrid** (if you need email archive).
+
+---
+
 ## Troubleshooting Email
 
 ### "SMTP Authentication Failed"
@@ -219,11 +314,16 @@ Use Notion's email-to-page feature:
 - Check port number (usually 587 or 465)
 - Some providers block automated emails
 
-### "Connection Refused"
+### "Connection Refused" or "Network Unreachable"
 
+**If running locally:**
 - Firewall blocking SMTP ports
 - Incorrect SMTP_SERVER setting
 - Network issues
+
+**If running on Railway/cloud:**
+- **This is expected** - SMTP is blocked
+- Switch to SendGrid or Slack (see above)
 
 ### "SSL Certificate Error"
 
