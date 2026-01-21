@@ -1,350 +1,537 @@
 # 🤖 AI Report Scanner
 
-**Automated weekly curation of AI and government reports using Claude AI**
+**Automated monthly curation of AI and government reports using Claude AI**
 
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Tests](https://img.shields.io/badge/tests-passing-brightgreen.svg)]()
+[![Monthly Scans](https://img.shields.io/badge/schedule-monthly-blue.svg)]()
 
-Stop spending hours searching for relevant AI reports. Get a curated weekly digest delivered automatically to your inbox, complete with priority rankings, key insights, and an audio-ready summary for NotebookLM.
+Stop spending hours searching for relevant AI reports. Get a curated monthly digest of the **best** 10-15 reports delivered automatically, complete with priority rankings, key insights, and an audio-ready summary for NotebookLM.
+
+**💰 Cost-Effective**: Monthly scanning costs only £3-5/month (75% less than weekly)
+
+---
 
 ## ✨ Features
 
-- 🔍 **Automated Weekly Search** - Scans 50+ authoritative sources for new AI/government reports
-- 🎯 **Smart Prioritization** - Reports ranked by relevance (Critical/High/Medium/Background)
-- 📧 **Email Delivery** - Beautifully formatted digest sent directly to your inbox
+- 🔍 **Automated Monthly Search** - Scans 50+ authoritative sources over 30 days
+- 🎯 **Smart Prioritization** - Reports ranked by relevance (Critical/High/Medium)
+- 🏆 **Quality Over Quantity** - Curates 10-15 BEST reports (not 25+ mixed quality)
+- 📧 **Email & Slack** - Delivers via email (SendGrid/Gmail) or Slack
 - 🎙️ **NotebookLM Ready** - Generates podcast-optimized source document
-- 💬 **Slack Integration** - Optional notifications to team channels
-- 📊 **Weekly Synthesis** - Cross-cutting themes and insights across all reports
-- 🔄 **Duplicate Detection** - Tracks previously seen reports
-- ✅ **Comprehensive Testing** - 95%+ code coverage with unit and integration tests
+- 💾 **Cache & Replay** - Test iterations for FREE after initial scan
+- 📊 **Monthly Synthesis** - Strategic insights and cross-cutting themes
+- 💰 **Cost Effective** - £3-5/month (vs £12-20 for weekly)
 - 📱 **iPhone Compatible** - Full setup guide for mobile deployment
+
+---
 
 ## 🚀 Quick Start
 
+**Get running in 10 minutes:**
+
 ### Prerequisites
 
-- Python 3.11 or higher
+- Python 3.11+
 - [Anthropic API key](https://console.anthropic.com)
-- ~~Gmail account~~ **Email is OPTIONAL** - reports saved locally to `reports/` folder
-  - See [EMAIL_GUIDE.md](EMAIL_GUIDE.md) for email alternatives
+- **Email/Slack OPTIONAL** - Reports always saved locally
 
 ### Installation
 
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/YOUR_USERNAME/AI-Report-Scanner.git
-   cd AI-Report-Scanner
-   ```
-
-2. **Install dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. **Configure environment**
-   ```bash
-   cp .env.example .env
-   # Edit .env with your API keys
-   ```
-
-4. **Run your first scan**
-   ```bash
-   python main.py
-   ```
-
-That's it! Check your email for the digest.
-
-## 📱 iPhone Setup
-
-Want to set this up entirely from your iPhone? We've got you covered!
-
-**[📖 Complete iPhone Setup Guide →](SETUP_IPHONE.md)**
-
-Step-by-step instructions for:
-- Getting API keys on mobile
-- Deploying to Railway
-- Setting up email notifications
-- Using NotebookLM for audio summaries
-
-## 📖 Detailed Setup
-
-### 1. Get Your Anthropic API Key
-
-1. Go to [Anthropic Console](https://console.anthropic.com)
-2. Create account or log in
-3. Navigate to API Keys
-4. Create new key and copy it
-
-### 2. Set Up Gmail App Password
-
-1. Go to [Google Account Security](https://myaccount.google.com/security)
-2. Enable 2-Step Verification (if not already)
-3. Create App Password:
-   - Security → App passwords
-   - Select "Mail" and "Other"
-   - Name it "AI Report Scanner"
-4. Copy the generated password
-
-### 3. Configure Environment Variables
-
-Edit `.env` file:
-
 ```bash
-# REQUIRED
-ANTHROPIC_API_KEY=your_anthropic_api_key_here
+# 1. Clone repository
+git clone https://github.com/lexicond/AI-Report-Scanner.git
+cd AI-Report-Scanner
 
-# OPTIONAL: Email (Leave blank to use local files only)
-# See EMAIL_GUIDE.md for alternatives
-#SENDER_EMAIL=your-email@gmail.com
-#RECIPIENT_EMAIL=recipient@example.com
-#EMAIL_PASSWORD=your_gmail_app_password
+# 2. Install dependencies
+pip install -r requirements.txt
 
-# OPTIONAL: Slack
-#SLACK_TOKEN=xoxb-your-slack-bot-token
-#SLACK_CHANNEL=#ai-reports
+# 3. Configure
+cp .env.example .env
+# Edit .env: Add ANTHROPIC_API_KEY=your_key_here
 
-# Settings
-LOG_LEVEL=INFO
-DRY_RUN=false
-SEARCH_DAYS_BACK=7
-```
-
-> 💡 **Email is optional!** Reports are always saved to `reports/` folder. Email just delivers them automatically. See [EMAIL_GUIDE.md](EMAIL_GUIDE.md) for setup help or alternatives.
-
-### 4. Test Locally
-
-Run in dry-run mode first:
-
-```bash
-# Set dry run in .env
-DRY_RUN=true
-
-# Run scanner
+# 4. Run first scan
 python main.py
 ```
 
-Check `reports/` folder for output files.
+**That's it!** Check `reports/` folder for your curated monthly digest.
 
-### 5. Deploy to Production
-
-Choose your deployment method:
-
-#### Option A: Railway (Recommended)
-```bash
-# Install Railway CLI
-npm install -g @railway/cli
-
-# Deploy
-./railway-deploy.sh
-```
-
-#### Option B: Docker
-```bash
-# Build and run
-docker-compose up -d
-```
-
-#### Option C: Cron Job (Linux/Mac)
-```bash
-# Add to crontab
-0 9 * * MON cd /path/to/AI-Report-Scanner && python main.py
-```
-
-## 🎯 Usage
-
-### Running Manually
-
-```bash
-python main.py
-```
-
-### Running Tests
-
-```bash
-# Run all tests
-pytest
-
-# Run with coverage
-pytest --cov
-
-# Run specific test file
-pytest tests/test_scanner.py
-```
-
-### Customizing Search
-
-Edit `search_prompt.txt` to:
-- Add/remove sources
-- Change search terms
-- Adjust priority criteria
-- Modify output format
+---
 
 ## 📊 What You Get
 
-Every Monday at 9 AM, you receive:
+### Monthly Digest Structure
 
-1. **📧 Email digest** with curated AI & government reports
-2. **📄 Reading list** organized by priority (Critical/High/Medium)
-3. **🎙️ NotebookLM source** ready for AI podcast generation
-4. **📊 Weekly synthesis** with key themes and insights
+**🔥 CRITICAL (3-5 reports)**
+- Major policy changes and announcements
+- Frontier AI breakthroughs
+- Cross-government strategic documents
+- *"Would be emailed to Permanent Secretaries"*
 
-Example excerpt:
+**📊 HIGH (5-8 reports)**
+- Leading think tank comprehensive analysis
+- Major consultancy research with evidence
+- International governance developments
+- *"Would be discussed in DG meetings"*
 
-```markdown
-🔥 CRITICAL - Read Immediately (3 reports)
+**📚 MEDIUM (2-3 reports)**
+- Exceptional academic research
+- International exemplars
+- *"Only if truly outstanding"*
 
-Anthropic: Claude 3.5 Sonnet Launch
-Source: Anthropic | Published: 2024-01-12
-Link: https://anthropic.com/research
+**Total: 10-16 high-quality reports** carefully curated from 30-day search
 
-Why Critical: Major capability upgrade affecting procurement decisions
+---
 
-Key Takeaways:
-- 50% improvement on complex reasoning
-- Extended 200K context window
-- Enhanced government document accuracy
+## 💰 Cost & ROI
 
-Actionable Insights: Review vendor assessments, update RFP requirements
+| Item | Cost | Details |
+|------|------|---------|
+| **Monthly API Cost** | £3-5 | One scan per month |
+| **Time Saved** | 3-4 hours | Manual curation time |
+| **Value of Time** | £150-200 | @ £50/hour |
+| **ROI** | **4,000%** | £3-5 cost vs £150-200 value |
+
+**Comparison:**
+- Weekly scanning: £12-20/month (£144-240/year)
+- **Monthly scanning**: £3-5/month (**£36-60/year**) ✅
+- **Savings**: 75% reduction
+
+---
+
+## 📖 Documentation
+
+### Getting Started
+
+- **[QUICK_TEST_SETUP.md](QUICK_TEST_SETUP.md)** ⭐ **START HERE** - Complete setup & testing guide (30-45 min)
+- **[MONTHLY_GUIDE.md](MONTHLY_GUIDE.md)** - Everything about monthly scanning
+- **[TESTING_GUIDE.md](TESTING_GUIDE.md)** - Cache & replay for free iteration
+
+### Deployment
+
+- **[RAILWAY_EMAIL_FIX.md](RAILWAY_EMAIL_FIX.md)** - Railway deployment + Slack/SendGrid setup
+- **[SETUP_IPHONE.md](SETUP_IPHONE.md)** - Complete iPhone setup guide
+
+### Configuration
+
+- **[EMAIL_GUIDE.md](EMAIL_GUIDE.md)** - Email alternatives & troubleshooting
+- **[DEPLOYMENT_FIX.md](DEPLOYMENT_FIX.md)** - Common deployment issues
+
+---
+
+## 🎯 Usage
+
+### Basic Usage
+
+```bash
+# Run monthly scan
+python main.py
+
+# View results
+cat reports/reading_list_*.md
 ```
+
+### Test & Iterate (FREE after initial scan)
+
+```bash
+# 1. Cache results once (costs £3-5)
+CACHE_MODE=true python main.py
+
+# 2. Iterate on quality criteria (FREE)
+# Edit search_prompt.txt
+CACHE_MODE=false REPLAY_MODE=true python main.py
+
+# 3. Repeat step 2 unlimited times (all FREE)
+```
+
+### Deployment Options
+
+**Option A: Railway** (Recommended)
+```bash
+# Automatic monthly scans on 1st of each month
+# See QUICK_TEST_SETUP.md for deployment
+```
+
+**Option B: Local Cron**
+```bash
+# Add to crontab
+0 9 1 * * cd /path/to/AI-Report-Scanner && python main.py
+```
+
+**Option C: Manual**
+```bash
+# Run whenever you want
+python main.py
+```
+
+---
 
 ## 🔧 Configuration
 
 ### Environment Variables
 
-| Variable | Required | Default | Description |
-|----------|----------|---------|-------------|
-| `ANTHROPIC_API_KEY` | Yes | - | Your Anthropic API key |
-| `SENDER_EMAIL` | No* | - | Gmail address for sending |
-| `RECIPIENT_EMAIL` | No* | - | Email to receive reports |
-| `EMAIL_PASSWORD` | No* | - | Gmail app password |
-| `SLACK_TOKEN` | No | - | Slack bot token |
-| `LOG_LEVEL` | No | `INFO` | Logging level |
-| `DRY_RUN` | No | `false` | Skip API calls (testing) |
-| `SEARCH_DAYS_BACK` | No | `7` | Days to search back |
+**Required:**
+```bash
+ANTHROPIC_API_KEY=your_key_here
+```
 
-*Required for email notifications
+**Optional (for delivery):**
+```bash
+# Slack (Recommended for Railway)
+SLACK_TOKEN=xoxb-your-real-token
+SLACK_CHANNEL=#ai-reports
 
-### Search Sources
+# Or SendGrid for email (works on Railway)
+SENDGRID_API_KEY=SG.your-key
+SENDGRID_FROM_EMAIL=your-verified-email@example.com
+RECIPIENT_EMAIL=your-email@example.com
 
-**Frontier AI Labs:** Anthropic, OpenAI, DeepMind, Meta AI, Mistral, Cohere
+# Or Gmail (local only, doesn't work on Railway)
+SENDER_EMAIL=your-email@gmail.com
+RECIPIENT_EMAIL=your-email@gmail.com
+EMAIL_PASSWORD=your-app-password
+```
 
-**UK Government:** Institute for Government, NAO, DSIT, Cabinet Office, CDDO
+**Scanning Config:**
+```bash
+SEARCH_DAYS_BACK=30      # Monthly (use 7 for weekly)
+MAX_REPORTS=15           # Best 15 reports
+```
 
-**Think Tanks:** Ada Lovelace Institute, Tony Blair Institute, Bennett Institute
+**Testing:**
+```bash
+CACHE_MODE=true          # Save API response for reuse
+REPLAY_MODE=true         # Use cached response (FREE iterations)
+```
 
-**Consultancies:** McKinsey, Deloitte, PwC, Accenture, BCG, Bain
+---
 
-**International:** OECD, EU Commission, World Bank
+## 📁 Output Structure
 
-**Academic:** Stanford HAI, MIT CSAIL, Oxford Internet Institute
+```
+AI-Report-Scanner/
+├── reports/
+│   ├── reading_list_2024-01-21.md    # Curated digest
+│   └── notebooklm_2024-01-21.md      # Audio summary source
+├── output/
+│   ├── metadata_2024-01-21.json      # Token usage, costs
+│   └── report_2024-01-21.json        # Full structured data
+├── cache/
+│   └── api_response.json             # Cached API response
+└── logs/
+    └── scanner_20240121.log          # Detailed logs
+```
+
+---
 
 ## 🏗️ Architecture
 
 ```
-AI-Report-Scanner/
-├── main.py                 # Entry point
-├── scanner.py              # Core scanning logic
-├── notifications.py        # Email & Slack integration
-├── config.py              # Configuration management
-├── search_prompt.txt      # Search instructions for Claude
-├── requirements.txt       # Python dependencies
-│
-├── tests/                 # Comprehensive test suite
-├── output/                # Generated metadata
-├── reports/               # Formatted reports
-└── logs/                  # Application logs
+┌─────────────┐
+│   main.py   │  Entry point
+└──────┬──────┘
+       │
+       ├──> scanner.py        (Core scanning logic)
+       │       ├──> Loads search_prompt.txt
+       │       ├──> Calls Claude API with web search
+       │       ├──> Caches responses (if CACHE_MODE)
+       │       └──> Generates reports
+       │
+       ├──> notifications.py  (Email & Slack delivery)
+       │       ├──> SendGrid support
+       │       ├──> SMTP support
+       │       └──> Slack SDK
+       │
+       └──> config.py         (Configuration management)
+               └──> Loads & validates .env
 ```
+
+---
 
 ## 🧪 Testing
 
-Run comprehensive test suite:
+### Run Tests
 
 ```bash
 # All tests with coverage
 pytest --cov
 
-# Specific test types
+# Specific test file
 pytest tests/test_scanner.py
+
+# Integration tests only
 pytest -m integration
 ```
 
-Test coverage: **96%** ✅
+**Test coverage: 96%** ✅
 
-## 📈 Performance & Costs
+### Test Workflow
 
-**Execution Time:** 5-8 minutes per run
-
-**Costs:**
-- Anthropic API: $3-5 per weekly report
-- Railway: Free tier sufficient
-- **Total: ~$12-20/month**
-
-**ROI:** Saves 3-4 hours/week of manual curation (14+ hours/month)
-
-## 🔐 Security
-
-- ✅ API keys in environment variables (never committed)
-- ✅ Gmail app password (not real password)
-- ✅ Minimal required permissions
-- ✅ HTTPS for all communications
-
-## 🐛 Troubleshooting
-
-**"No module named 'anthropic'"**
 ```bash
-pip install -r requirements.txt
+# 1. Unit tests (fast, no API calls)
+DRY_RUN=true pytest
+
+# 2. Integration test with cache (pay once)
+CACHE_MODE=true pytest -m integration
+
+# 3. Iterate on tests (FREE)
+REPLAY_MODE=true pytest
 ```
-
-**"API key not found"**
-```bash
-cp .env.example .env
-# Edit .env with your API key
-```
-
-**"Email not sending"**
-- Use Gmail app password (not regular password)
-- Enable 2FA first
-- Check logs: `cat logs/scanner_*.log`
-
-**More help:** See [SETUP_IPHONE.md#troubleshooting](SETUP_IPHONE.md#-troubleshooting)
-
-## 📚 Documentation
-
-- **[iPhone Setup Guide](SETUP_IPHONE.md)** - Complete mobile setup (30-45 mins)
-- **[Search Prompt](search_prompt.txt)** - Customizable search instructions
-- **[Tests](tests/)** - Test suite examples
-
-## 🗺️ Roadmap
-
-### Coming Soon
-- [ ] Web dashboard
-- [ ] RSS feed aggregation
-- [ ] Notion integration
-- [ ] Automated NotebookLM podcast generation
-
-### Future
-- [ ] ML-based relevance scoring
-- [ ] Trend detection across weeks
-- [ ] Multi-user support
-
-## 📄 License
-
-MIT License - see [LICENSE](LICENSE)
-
-## 🙏 Acknowledgments
-
-- **Anthropic** - Claude AI powers intelligent curation
-- **Railway** - Simple deployment platform
-- **Google NotebookLM** - Audio summary generation
-
-## 💬 Support
-
-- 📧 Email: [Open an issue](https://github.com/YOUR_USERNAME/AI-Report-Scanner/issues)
-- 📖 Docs: [SETUP_IPHONE.md](SETUP_IPHONE.md)
 
 ---
 
-**Made with ❤️ for government AI teams everywhere**
+## 📱 Deployment
+
+### Railway (Recommended)
+
+**Automatic monthly scans on cloud platform**
+
+```bash
+# 1. Deploy to Railway
+./railway-deploy.sh
+
+# Or follow QUICK_TEST_SETUP.md for step-by-step
+```
+
+**Railway automatically:**
+- ✅ Runs on 1st of each month at 9 AM
+- ✅ Sends results via Slack
+- ✅ Handles all dependencies
+- ✅ Manages environment variables
+
+**Cost: Free tier sufficient + £3-5/month API costs**
+
+### Local Cron
+
+**For running on your own server**
+
+```bash
+# Add to crontab
+crontab -e
+
+# Monthly on 1st at 9 AM
+0 9 1 * * cd /path/to/AI-Report-Scanner && /usr/bin/python3 main.py
+```
+
+---
+
+## 🎨 Customization
+
+### Adjust Report Quality
+
+Edit `search_prompt.txt`:
+
+```markdown
+## QUALITY FILTERS
+
+# Stricter (fewer reports)
+2. Substantial and significant (40+ pages instead of 30+)
+
+# More lenient (more reports)
+2. Substantial and significant (20+ pages instead of 30+)
+```
+
+### Change Schedule
+
+**Weekly instead of monthly:**
+```bash
+SEARCH_DAYS_BACK=7
+MAX_REPORTS=25
+# Cron: 0 9 * * MON
+```
+
+**Bi-weekly:**
+```bash
+SEARCH_DAYS_BACK=14
+MAX_REPORTS=20
+# Cron: 0 9 1,15 * *
+```
+
+### Add Custom Sources
+
+Edit `search_prompt.txt`:
+
+```markdown
+**Your Custom Category**
+- Search: "Your Organization report {date_range}"
+- Search: "Your Topics {date_range}"
+```
+
+---
+
+## 🔐 Security
+
+- ✅ API keys stored in environment variables (never committed)
+- ✅ `.env` file in `.gitignore`
+- ✅ Gmail app passwords (not real passwords)
+- ✅ Minimal required permissions
+- ✅ No sensitive data in logs
+- ✅ HTTPS for all API communications
+
+**Best practices:**
+```bash
+# Check before committing
+git diff .env  # Should not exist in git
+
+# Rotate keys quarterly
+# Use separate keys for dev/prod
+```
+
+---
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+**"Report is empty or useless"**
+- ✅ Fixed: Web search now enabled in API call
+- Check logs for errors
+- Verify ANTHROPIC_API_KEY is set
+
+**"Slack not receiving reports"**
+- Token must be REAL (not `xoxb-your-slack-bot-token` placeholder)
+- Bot must be added to #ai-reports channel
+- Check Railway logs for errors
+
+**"Email not working on Railway"**
+- Gmail SMTP blocked on Railway (use SendGrid instead)
+- See [RAILWAY_EMAIL_FIX.md](RAILWAY_EMAIL_FIX.md)
+
+**"Cache not found in replay mode"**
+- Run with `CACHE_MODE=true` first
+- Check `cache/api_response.json` exists
+
+**More help:** See [QUICK_TEST_SETUP.md](QUICK_TEST_SETUP.md#-troubleshooting)
+
+---
+
+## 🤝 Contributing
+
+Contributions welcome!
+
+```bash
+# 1. Fork repository
+# 2. Create feature branch
+git checkout -b feature/amazing-feature
+
+# 3. Make changes and test
+pytest --cov
+
+# 4. Commit
+git commit -m "Add amazing feature"
+
+# 5. Push and create PR
+git push origin feature/amazing-feature
+```
+
+---
+
+## 📚 Additional Resources
+
+### Search Sources
+
+Scans 50+ sources including:
+- **Frontier AI**: Anthropic, OpenAI, DeepMind, Meta AI, Mistral, Cohere
+- **UK Government**: Institute for Government, NAO, DSIT, Cabinet Office, CDDO
+- **Think Tanks**: Ada Lovelace Institute, Tony Blair Institute, Bennett Institute
+- **Consultancies**: McKinsey, Deloitte, PwC, Accenture, BCG, Bain
+- **International**: OECD, EU Commission, World Bank
+- **Academic**: Stanford HAI, MIT CSAIL, Oxford Internet Institute
+
+### Example Output
+
+```markdown
+# AI & Government Reports: Month of 2024-01-21
+
+🔥 CRITICAL (4 reports)
+
+───────────────────────────────────────────
+
+OpenAI GPT-5 Capabilities Report
+Source: OpenAI | Published: 2024-01-15 | Length: 52 pages
+Link: https://openai.com/research/gpt-5
+
+Why Critical: Major capability leap with new reasoning
+features directly applicable to government policy analysis.
+
+Key Takeaways:
+- 80% improvement on complex policy reasoning
+- New "government mode" for sensitive document handling
+- Enhanced UK legal and regulatory understanding
+
+Actionable Insights: Review procurement frameworks to
+account for enhanced capabilities. Consider pilot programs
+for policy analysis use cases.
+
+[... more reports ...]
+
+MONTHLY SYNTHESIS
+
+Cross-Cutting Themes:
+1. Acceleration of frontier model reasoning capabilities
+2. Growing international consensus on AI governance
+3. Evidence of AI productivity gains in public sector
+
+[... synthesis continues ...]
+```
+
+---
+
+## 📄 License
+
+MIT License - see [LICENSE](LICENSE) file for details.
+
+You are free to use, modify, and distribute this software for any purpose.
+
+---
+
+## 🙏 Acknowledgments
+
+- **Anthropic** - Claude AI powers the intelligent curation and web search
+- **Railway** - Simple, powerful deployment platform
+- **Google NotebookLM** - Audio summary generation
+- **Open source community** - All the amazing libraries
+
+---
+
+## 💬 Support & Contact
+
+- 📖 **Documentation**: Check guides in repository
+- 🐛 **Issues**: [GitHub Issues](https://github.com/lexicond/AI-Report-Scanner/issues)
+- 💡 **Discussions**: [GitHub Discussions](https://github.com/lexicond/AI-Report-Scanner/discussions)
+
+---
+
+## 🗺️ Roadmap
+
+### v1.1 (Current)
+- ✅ Monthly scanning for cost reduction
+- ✅ Cache & replay for free iteration
+- ✅ SendGrid + Slack support
+- ✅ Web search enabled
+
+### v1.2 (Planned)
+- [ ] Web dashboard for viewing reports
+- [ ] RSS feed aggregation
+- [ ] Multi-user support
+- [ ] Notion integration
+
+### v2.0 (Future)
+- [ ] ML-based relevance scoring
+- [ ] Trend detection across months
+- [ ] Custom report templates
+- [ ] Automated NotebookLM podcast generation
+
+---
+
+## ⭐ Star History
+
+If you find this useful, please star the repo! It helps others discover it.
+
+---
+
+**Made with ❤️ for government AI teams**
 
 *Automate the boring stuff. Focus on the important work.*
+
+**Monthly curation. Maximum value. Minimum cost.**

@@ -1,6 +1,6 @@
 # 📱 iPhone Setup Guide for AI Report Scanner
 
-**Complete step-by-step guide to set up your automated weekly AI report curator on iPhone**
+**Complete step-by-step guide to set up your automated monthly AI report curator on iPhone**
 
 This guide will help you set up the AI Report Scanner entirely from your iPhone. No computer required! ✨
 
@@ -19,12 +19,12 @@ This guide will help you set up the AI Report Scanner entirely from your iPhone.
 
 ## 🎯 What You'll Get
 
-Every Monday at 9 AM, you'll automatically receive:
+On the 1st of each month at 9 AM, you'll automatically receive:
 
 1. **📧 Email digest** with curated AI & government reports
 2. **📄 Reading list** organized by priority (Critical/High/Medium)
 3. **🎙️ NotebookLM source** ready for AI podcast generation
-4. **📊 Weekly synthesis** with key themes and insights
+4. **📊 Monthly synthesis** with key themes and insights
 
 ---
 
@@ -58,9 +58,9 @@ Every Monday at 9 AM, you'll automatically receive:
    ```
 
 ### Pricing Info:
-- Claude Sonnet 4: ~$3-5 per report
+- Claude Sonnet 4: ~£3-5 per monthly report
 - Free credits available for new accounts
-- Reports run weekly, so ~$12-20/month
+- Reports run monthly, so ~£3-5/month (75% cheaper than weekly!)
 
 ---
 
@@ -327,14 +327,14 @@ You need this so the app can send you emails.
 
 ## 🎨 Customization Options
 
-### Change Email Frequency
+### Change Scan Frequency
 
-In Railway Dashboard → Settings → Cron:
+In Railway Dashboard → Settings → Cron (current: monthly):
 
-- **Daily**: `0 9 * * *`
-- **Weekly (Monday)**: `0 9 * * MON`
-- **Bi-weekly**: `0 9 * * MON/2`
-- **Monthly**: `0 9 1 * *`
+- **Monthly (default)**: `0 9 1 * *` - 1st of month at 9 AM
+- **Weekly (more expensive)**: `0 9 * * MON` - Every Monday
+- **Bi-weekly**: `0 9 1,15 * *` - 1st and 15th of month
+- **Daily (not recommended)**: `0 9 * * *` - Every day
 
 ### Change Search Period
 
@@ -343,7 +343,7 @@ Add environment variable:
 SEARCH_DAYS_BACK=14
 ```
 
-For last 14 days instead of 7.
+For bi-weekly (14 days) instead of monthly (30 days).
 
 ### Add Slack Notifications
 
@@ -558,9 +558,10 @@ Before you finish, verify:
 
 ### Monthly costs:
 
-- **Anthropic API**: $12-20/month (4 reports)
-  - $3-5 per weekly report
+- **Anthropic API**: £3-5/month (1 monthly report)
+  - £3-5 per monthly scan
   - Varies by number of reports found
+  - 75% cheaper than weekly scanning!
 
 - **Railway**: Free tier
   - $5 credit monthly
@@ -570,7 +571,7 @@ Before you finish, verify:
 - **Gmail**: Free
 - **NotebookLM**: Free
 
-**Total: ~$12-20/month** for automated curation that would take 2-3 hours manually!
+**Total: ~£3-5/month** for automated curation that would take 3-4 hours manually!
 
 ---
 
@@ -578,15 +579,15 @@ Before you finish, verify:
 
 ### Time saved:
 
-- **Manual search**: 2 hours/week
-- **Reading news**: 1 hour/week
-- **Organizing reports**: 30 mins/week
+- **Manual search**: 3 hours/month
+- **Reading scattered sources**: 1 hour/month
+- **Organizing reports**: 30 mins/month
 
-**Total saved: 3.5 hours/week = 14 hours/month**
+**Total saved: 4.5 hours/month**
 
-At £50/hour value: **£700/month saved** for £15/month cost.
+At £50/hour value: **£225/month saved** for £3-5/month cost.
 
-**ROI: 4,600%** 🚀
+**ROI: 4,500-7,500%** 🚀 (Even better than weekly!)
 
 ---
 
