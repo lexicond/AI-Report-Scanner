@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-AI Report Scanner - Weekly automated report curation
+AI Report Scanner - Monthly automated report curation
 Main entry point for the application
 """
 import sys
@@ -25,7 +25,7 @@ def setup_logging(log_level: str):
 def main():
     """Main execution function"""
     print("=" * 70)
-    print("🤖 AI Report Scanner - Weekly Government AI Report Curation")
+    print("🤖 AI Report Scanner - Monthly Government AI Report Curation")
     print("=" * 70)
     print()
 

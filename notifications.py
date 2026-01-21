@@ -44,7 +44,7 @@ class NotificationService:
         try:
             # Create message
             msg = MIMEMultipart("alternative")
-            msg["Subject"] = f"📊 Weekly AI Reports Digest - {report['generated_at']}"
+            msg["Subject"] = f"📊 Monthly AI Reports Digest - {report['generated_at']}"
             msg["From"] = self.settings.sender_email
             msg["To"] = self.settings.recipient_email
 
@@ -99,7 +99,7 @@ class NotificationService:
             message = Mail(
                 from_email=Email(self.settings.sendgrid_from_email),
                 to_emails=To(self.settings.recipient_email),
-                subject=f"📊 Weekly AI Reports Digest - {report['generated_at']}",
+                subject=f"📊 Monthly AI Reports Digest - {report['generated_at']}",
                 plain_text_content=Content("text/plain", text_content),
                 html_content=Content("text/html", html_content)
             )
@@ -138,17 +138,18 @@ class NotificationService:
 
     def _format_email_text(self, report: Dict) -> str:
         """Format plain text email body"""
-        text = f"""Weekly AI & Government Reports - {report['generated_at']}
+        text = f"""Monthly AI & Government Reports - {report['generated_at']}
 
-Your weekly digest of AI and government reports is ready!
+Your monthly digest of AI and government reports is ready!
 
 {report['reading_list'][:1000]}...
 
-[Full reading list and NotebookLM source attached]
+[Full reading list attached as markdown file]
 
 ---
 Generated using AI Report Scanner
 Model: {report['metadata'].get('model', 'unknown')}
+Search Period: Last 30 days
 """
         return text
 
@@ -212,8 +213,9 @@ Model: {report['metadata'].get('model', 'unknown')}
 </head>
 <body>
     <div class="header">
-        <h1>📊 Weekly AI Reports Digest</h1>
+        <h1>📊 Monthly AI Reports Digest</h1>
         <p>{report['generated_at']}</p>
+        <p style="font-size: 0.9em;">Best reports from the past 30 days</p>
     </div>
 
     <div class="content">
@@ -300,7 +302,7 @@ Model: {report['metadata'].get('model', 'unknown')}
                     "type": "header",
                     "text": {
                         "type": "plain_text",
-                        "text": f"📊 Weekly AI Reports - {report['generated_at']}"
+                        "text": f"📊 Monthly AI Reports - {report['generated_at']}"
                     }
                 },
                 {
@@ -325,7 +327,7 @@ Model: {report['metadata'].get('model', 'unknown')}
             # Send message
             response = client.chat_postMessage(
                 channel=self.settings.slack_channel,
-                text=f"Weekly AI Reports - {report['generated_at']}",
+                text=f"Monthly AI Reports - {report['generated_at']}",
                 blocks=blocks
             )
 
@@ -342,14 +344,45 @@ Model: {report['metadata'].get('model', 'unknown')}
             self.logger.error(f"Error sending Slack notification: {e}")
             return False
 
-    def _extract_summary(self, reading_list: str, max_length: int = 2000) -> str:
+    def _extract_summary(self, reading_list: str, max_length: int = 2800) -> str:
         """Extract summary from reading list for Slack"""
-        # Find the critical section
-        if "## 🔥 CRITICAL" in reading_list:
-            parts = reading_list.split("## 🔥 CRITICAL", 1)
-            if len(parts) > 1:
-                critical_section = parts[1].split("##")[0]  # Get until next section
-                return f"## 🔥 CRITICAL{critical_section[:max_length]}"
+        # Try to find the critical section with different possible markers
+        critical_markers = ["## 🔥 CRITICAL", "## CRITICAL", "# 🔥 CRITICAL", "## 🔥"]
 
-        # Fallback to first part
-        return reading_list[:max_length] + "..."
+        for marker in critical_markers:
+            if marker in reading_list:
+                parts = reading_list.split(marker, 1)
+                if len(parts) > 1:
+                    # Get critical section up to next major heading
+                    critical_section = parts[1]
+                    # Split by next section marker
+                    for next_marker in ["## 📊", "## 📚", "## HIGH", "## MEDIUM", "## Summary"]:
+                        if next_marker in critical_section:
+                            critical_section = critical_section.split(next_marker)[0]
+                            break
+
+                    summary = f"{marker}{critical_section[:max_length]}"
+
+                    # If we have room, add a preview of HIGH priority too
+                    if len(summary) < max_length - 500:
+                        if "## 📊 HIGH" in reading_list or "## HIGH" in reading_list:
+                            high_marker = "## 📊 HIGH" if "## 📊 HIGH" in reading_list else "## HIGH"
+                            high_parts = reading_list.split(high_marker, 1)
+                            if len(high_parts) > 1:
+                                high_preview = high_parts[1][:500]
+                                summary += f"\n\n{high_marker}{high_preview}..."
+
+                    return summary
+
+        # Fallback: Show first 2800 characters with report count
+        lines = reading_list.split('\n')
+        summary_lines = []
+        char_count = 0
+
+        for line in lines[:50]:  # First 50 lines
+            if char_count + len(line) > max_length:
+                break
+            summary_lines.append(line)
+            char_count += len(line)
+
+        return '\n'.join(summary_lines) + "\n\n_[Full report attached to email or check reports folder]_"
