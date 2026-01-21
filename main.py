@@ -24,12 +24,7 @@ def setup_logging(log_level: str):
 
 def main():
     """Main execution function"""
-    print("=" * 70)
-    print("🤖 AI Report Scanner - Monthly Government AI Report Curation")
-    print("=" * 70)
-    print()
-
-    # Load settings
+    # Load settings first
     try:
         settings = get_settings()
         setup_logging(settings.log_level)
@@ -38,9 +33,24 @@ def main():
         # Create necessary directories
         settings.create_directories()
 
+        # Determine period name based on days_back
+        if settings.search_days_back <= 7:
+            period_name = "Weekly"
+        elif settings.search_days_back <= 14:
+            period_name = "Bi-weekly"
+        elif settings.search_days_back <= 21:
+            period_name = "Tri-weekly"
+        else:
+            period_name = "Monthly"
+
+        print("=" * 70)
+        print(f"🤖 AI Report Scanner - {period_name} Government AI Report Curation")
+        print("=" * 70)
+        print()
+
         logger.info("Configuration loaded successfully")
         logger.info(f"Mode: {'DRY RUN' if settings.dry_run else 'PRODUCTION'}")
-        logger.info(f"Search period: Last {settings.search_days_back} days")
+        logger.info(f"Search period: Last {settings.search_days_back} days ({period_name})")
 
     except Exception as e:
         print(f"❌ Error loading configuration: {e}")

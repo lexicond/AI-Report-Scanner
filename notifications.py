@@ -17,6 +17,18 @@ class NotificationService:
         self.settings = settings
         self.logger = logging.getLogger("NotificationService")
 
+    def _get_period_name(self) -> str:
+        """Get period name based on search_days_back"""
+        days = self.settings.search_days_back
+        if days <= 7:
+            return "Weekly"
+        elif days <= 14:
+            return "Bi-weekly"
+        elif days <= 21:
+            return "Tri-weekly"
+        else:
+            return "Monthly"
+
     def send_email(self, report: Dict, attachments: Optional[list] = None) -> bool:
         """
         Send report via email (SMTP or SendGrid)
@@ -42,9 +54,11 @@ class NotificationService:
     def _send_via_smtp(self, report: Dict, attachments: Optional[list] = None) -> bool:
         """Send email via SMTP (Gmail, etc.)"""
         try:
+            period_name = self._get_period_name()
+
             # Create message
             msg = MIMEMultipart("alternative")
-            msg["Subject"] = f"📊 Monthly AI Reports Digest - {report['generated_at']}"
+            msg["Subject"] = f"📊 {period_name} AI Reports Digest - {report['generated_at']}"
             msg["From"] = self.settings.sender_email
             msg["To"] = self.settings.recipient_email
 
@@ -89,6 +103,8 @@ class NotificationService:
             from sendgrid.helpers.mail import Mail, Email, To, Content, Attachment
             import base64
 
+            period_name = self._get_period_name()
+
             self.logger.info("Sending email via SendGrid...")
 
             # Create email content
@@ -99,7 +115,7 @@ class NotificationService:
             message = Mail(
                 from_email=Email(self.settings.sendgrid_from_email),
                 to_emails=To(self.settings.recipient_email),
-                subject=f"📊 Monthly AI Reports Digest - {report['generated_at']}",
+                subject=f"📊 {period_name} AI Reports Digest - {report['generated_at']}",
                 plain_text_content=Content("text/plain", text_content),
                 html_content=Content("text/html", html_content)
             )
@@ -138,9 +154,12 @@ class NotificationService:
 
     def _format_email_text(self, report: Dict) -> str:
         """Format plain text email body"""
-        text = f"""Monthly AI & Government Reports - {report['generated_at']}
+        period_name = self._get_period_name()
+        days = self.settings.search_days_back
 
-Your monthly digest of AI and government reports is ready!
+        text = f"""{period_name} AI & Government Reports - {report['generated_at']}
+
+Your {period_name.lower()} digest of AI and government reports is ready!
 
 {report['reading_list'][:1000]}...
 
@@ -149,12 +168,15 @@ Your monthly digest of AI and government reports is ready!
 ---
 Generated using AI Report Scanner
 Model: {report['metadata'].get('model', 'unknown')}
-Search Period: Last 30 days
+Search Period: Last {days} days
 """
         return text
 
     def _format_email_html(self, report: Dict) -> str:
         """Format HTML email body"""
+        period_name = self._get_period_name()
+        days = self.settings.search_days_back
+
         # Convert markdown to HTML (basic conversion)
         reading_list_html = self._markdown_to_html(report['reading_list'])
 
@@ -213,9 +235,9 @@ Search Period: Last 30 days
 </head>
 <body>
     <div class="header">
-        <h1>📊 Monthly AI Reports Digest</h1>
+        <h1>📊 {period_name} AI Reports Digest</h1>
         <p>{report['generated_at']}</p>
-        <p style="font-size: 0.9em;">Best reports from the past 30 days</p>
+        <p style="font-size: 0.9em;">Best reports from the past {days} days</p>
     </div>
 
     <div class="content">
@@ -288,6 +310,8 @@ Search Period: Last 30 days
             return False
 
         try:
+            period_name = self._get_period_name()
+
             from slack_sdk import WebClient
             from slack_sdk.errors import SlackApiError
 
@@ -302,7 +326,7 @@ Search Period: Last 30 days
                     "type": "header",
                     "text": {
                         "type": "plain_text",
-                        "text": f"📊 Monthly AI Reports - {report['generated_at']}"
+                        "text": f"📊 {period_name} AI Reports - {report['generated_at']}"
                     }
                 },
                 {
@@ -327,7 +351,7 @@ Search Period: Last 30 days
             # Send message
             response = client.chat_postMessage(
                 channel=self.settings.slack_channel,
-                text=f"Monthly AI Reports - {report['generated_at']}",
+                text=f"{period_name} AI Reports - {report['generated_at']}",
                 blocks=blocks
             )
 

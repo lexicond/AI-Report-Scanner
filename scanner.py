@@ -65,6 +65,25 @@ class ReportScanner:
         start_date = today - timedelta(days=self.settings.search_days_back)
         return today, start_date, today
 
+    def _get_period_name(self) -> Tuple[str, str, str]:
+        """
+        Get period name based on search_days_back
+
+        Returns:
+            Tuple of (period_name, period_name_caps, frequency)
+            e.g., ("weekly", "Weekly", "week") or ("monthly", "Monthly", "month")
+        """
+        days = self.settings.search_days_back
+
+        if days <= 7:
+            return ("weekly", "Weekly", "week")
+        elif days <= 14:
+            return ("bi-weekly", "Bi-weekly", "two weeks")
+        elif days <= 21:
+            return ("tri-weekly", "Tri-weekly", "three weeks")
+        else:  # 30+ days
+            return ("monthly", "Monthly", "month")
+
     def _load_prompt_template(self) -> str:
         """Load search prompt template"""
         prompt_file = Path("search_prompt.txt")
@@ -74,8 +93,9 @@ class ReportScanner:
         with open(prompt_file, 'r') as f:
             return f.read()
 
-    def _format_prompt(self, template: str, current_date: str, start_date: str, end_date: str) -> str:
-        """Format prompt with dates using safe string replacement"""
+    def _format_prompt(self, template: str, current_date: str, start_date: str, end_date: str,
+                      period_name: str, period_name_caps: str, days_back: int) -> str:
+        """Format prompt with dates and period using safe string replacement"""
         date_range = f"{start_date} to {end_date}"
 
         # Use string replacement to avoid conflicts with Claude's output template placeholders
@@ -84,17 +104,23 @@ class ReportScanner:
         template = template.replace("{end_date}", end_date)
         template = template.replace("{date_range}", date_range)
         template = template.replace("{date}", current_date)
+        template = template.replace("{period_name}", period_name)
+        template = template.replace("{period_name_caps}", period_name_caps)
+        template = template.replace("{days_back}", str(days_back))
 
         return template
 
     def generate_report(self) -> Dict[str, any]:
         """
-        Main method to generate monthly report using Claude
+        Main method to generate report using Claude (weekly, monthly, etc. based on config)
 
         Returns:
             Dict with reading_list, notebooklm_source, metadata
         """
-        self.logger.info("Starting monthly report generation")
+        # Get period name based on search_days_back
+        period_name, period_name_caps, frequency = self._get_period_name()
+
+        self.logger.info(f"Starting {period_name} report generation ({self.settings.search_days_back} days)")
 
         # Calculate dates
         today, start_date, end_date = self._calculate_date_range()
@@ -107,7 +133,10 @@ class ReportScanner:
         # Load and format prompt
         try:
             template = self._load_prompt_template()
-            prompt = self._format_prompt(template, current_date, start_date_str, end_date_str)
+            prompt = self._format_prompt(
+                template, current_date, start_date_str, end_date_str,
+                period_name, period_name_caps, self.settings.search_days_back
+            )
         except Exception as e:
             self.logger.error(f"Error loading prompt: {e}")
             raise

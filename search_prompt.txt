@@ -1,17 +1,17 @@
-# MONTHLY UK GOVERNMENT AI REPORT SCANNER
+# {period_name_caps} UK GOVERNMENT AI REPORT SCANNER
 
 **TODAY'S DATE**: {current_date}
-**SEARCH PERIOD**: {start_date} to {end_date} (last 30 days)
+**SEARCH PERIOD**: {start_date} to {end_date} (last {days_back} days)
 **CURRENT YEAR**: 2026
 
 ---
 
 ## 🎯 YOUR MISSION
 
-You are creating a **professional monthly newsletter** for senior UK government officials tracking AI policy and transformation.
+You are creating a **professional {period_name} newsletter** for senior UK government officials tracking AI policy and transformation.
 
 **CRITICAL INSTRUCTIONS**:
-1. ✅ **DO**: Use web_search tool to find reports published in the last 30 days
+1. ✅ **DO**: Use web_search tool to find reports published in the last {days_back} days
 2. ✅ **DO**: Output ONLY the formatted newsletter (no search explanations!)
 3. ✅ **DO**: Focus on reports from **January 2026** and **late December 2025**
 4. ❌ **DON'T**: Explain your search process or methodology
@@ -19,7 +19,7 @@ You are creating a **professional monthly newsletter** for senior UK government 
 6. ❌ **DON'T**: Include reports from 2025 unless they were published in December 2025
 7. ❌ **DON'T**: Start with "Based on my search" - start with the newsletter header
 
-**OUTPUT**: A polished newsletter that looks professionally curated, NOT a search log.
+**OUTPUT**: A polished {period_name} newsletter that looks professionally curated, NOT a search log.
 
 ---
 
@@ -83,16 +83,16 @@ You are creating a **professional monthly newsletter** for senior UK government 
 Generate a professional newsletter in this EXACT format:
 
 ```markdown
-# AI & Government Reports: Month of {date}
+# AI & Government Reports: {period_name_caps} Digest - {date}
 
 **Period**: {start_date} to {end_date}
-**Total Reports**: {count} (curated from 30-day search)
+**Total Reports**: {count} (curated from {days_back}-day search)
 
 ---
 
 ## 📰 EXECUTIVE SUMMARY
 
-This month's standout developments in UK government AI transformation:
+This {period_name}'s standout developments in UK government AI transformation:
 
 - **{Theme 1}**: {1-sentence insight across multiple reports}
 - **{Theme 2}**: {1-sentence insight}
@@ -103,7 +103,7 @@ This month's standout developments in UK government AI transformation:
 
 ---
 
-## 🔥 CRITICAL - Must Read This Month ({count} reports)
+## 🔥 CRITICAL - Must Read This {period_name_caps} ({count} reports)
 
 ### {Report Title}
 
@@ -132,7 +132,7 @@ This month's standout developments in UK government AI transformation:
 
 ---
 
-## 📊 HIGH PRIORITY - Read This Month ({count} reports)
+## 📊 HIGH PRIORITY - Read This {period_name_caps} ({count} reports)
 
 ### {Report Title}
 
@@ -160,7 +160,7 @@ Brief mention of other relevant publications:
 
 ---
 
-## 🧭 MONTHLY SYNTHESIS
+## 🧭 {period_name_caps} SYNTHESIS
 
 ### Cross-Cutting Themes
 
@@ -175,7 +175,7 @@ Brief mention of other relevant publications:
 
 ### Evidence for UK Government Priorities
 
-**AI Opportunities Action Plan**: {Relevant findings from this month's reports}
+**AI Opportunities Action Plan**: {Relevant findings from this {period_name}'s reports}
 
 **Departmental AI Adoption**: {Evidence on what's working/not working}
 
@@ -189,7 +189,7 @@ Brief mention of other relevant publications:
 2. **{Insight 2}**: {Actionable implication}
 3. **{Insight 3}**: {Actionable implication}
 
-### Questions Raised This Month
+### Questions Raised This {period_name_caps}
 
 - {Unanswered question from reports}
 - {Area needing more investigation}
@@ -197,13 +197,13 @@ Brief mention of other relevant publications:
 
 ### Looking Ahead
 
-Expected publications and areas to watch next month:
+Expected publications and areas to watch:
 - {Upcoming report or development}
 - {Policy area under development}
 
 ---
 
-*This monthly digest is generated using AI-powered search and curation. Reports are selected based on relevance to UK government AI transformation, organizational authority, and quality of evidence.*
+*This {period_name} digest is generated using AI-powered search and curation. Reports are selected based on relevance to UK government AI transformation, organizational authority, and quality of evidence.*
 ```
 
 ---
