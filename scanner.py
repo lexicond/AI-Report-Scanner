@@ -117,6 +117,30 @@ class ReportScanner:
             self.logger.info("DRY RUN MODE - Skipping actual API call")
             return self._generate_mock_report(current_date)
 
+        # Check replay mode - use cached response
+        if self.settings.replay_mode:
+            self.logger.info("REPLAY MODE - Using cached API response")
+            cached_response = self._load_cached_response()
+            if cached_response:
+                self.logger.info("Successfully loaded cached response")
+                # Process cached response same as real API response
+                message = self._mock_message_from_cache(cached_response)
+                reading_list, notebooklm_source = self._parse_response(message)
+                metadata = self._extract_metadata(message, current_date)
+
+                result = {
+                    "reading_list": reading_list,
+                    "notebooklm_source": notebooklm_source,
+                    "metadata": metadata,
+                    "generated_at": current_date
+                }
+
+                self._save_outputs(result)
+                self.logger.info("Report generation from cache completed successfully")
+                return result
+            else:
+                self.logger.warning("No cached response found, falling back to API call")
+
         # Call Claude API with web search enabled
         try:
             self.logger.info("Calling Claude API with web search...")
@@ -135,6 +159,11 @@ class ReportScanner:
             )
 
             self.logger.info("Successfully received response from Claude")
+
+            # Cache response if cache_mode is enabled
+            if self.settings.cache_mode:
+                self._save_cached_response(message)
+                self.logger.info("Response saved to cache for future replay")
 
             # Extract content
             reading_list, notebooklm_source = self._parse_response(message)
@@ -239,6 +268,78 @@ class ReportScanner:
             }
             json.dump(serializable_result, f, indent=2)
         self.logger.info(f"Saved full result to {full_result_file}")
+
+    def _save_cached_response(self, message):
+        """Save API response to cache for replay mode"""
+        try:
+            cache_path = Path(self.settings.cache_file)
+            cache_path.parent.mkdir(parents=True, exist_ok=True)
+
+            # Extract the important parts of the response
+            cache_data = {
+                "content": [
+                    {
+                        "type": block.type,
+                        "text": block.text if hasattr(block, 'text') else ""
+                    }
+                    for block in message.content
+                ],
+                "model": message.model,
+                "stop_reason": message.stop_reason,
+                "usage": {
+                    "input_tokens": message.usage.input_tokens,
+                    "output_tokens": message.usage.output_tokens
+                },
+                "cached_at": datetime.now().isoformat()
+            }
+
+            with open(cache_path, 'w') as f:
+                json.dump(cache_data, f, indent=2)
+
+            self.logger.info(f"Saved API response to cache: {cache_path}")
+            return True
+        except Exception as e:
+            self.logger.error(f"Error saving cache: {e}")
+            return False
+
+    def _load_cached_response(self):
+        """Load cached API response for replay mode"""
+        try:
+            cache_path = Path(self.settings.cache_file)
+            if not cache_path.exists():
+                self.logger.warning(f"Cache file not found: {cache_path}")
+                return None
+
+            with open(cache_path, 'r') as f:
+                cache_data = json.load(f)
+
+            cached_at = cache_data.get('cached_at', 'unknown')
+            self.logger.info(f"Loaded cached response from {cached_at}")
+            return cache_data
+        except Exception as e:
+            self.logger.error(f"Error loading cache: {e}")
+            return None
+
+    def _mock_message_from_cache(self, cache_data):
+        """Create a mock message object from cached data"""
+        # Create a simple object that mimics the Anthropic message structure
+        class MockMessage:
+            def __init__(self, cache_data):
+                self.content = [
+                    type('obj', (object,), {
+                        'type': block['type'],
+                        'text': block['text']
+                    })()
+                    for block in cache_data['content']
+                ]
+                self.model = cache_data['model']
+                self.stop_reason = cache_data['stop_reason']
+                self.usage = type('obj', (object,), {
+                    'input_tokens': cache_data['usage']['input_tokens'],
+                    'output_tokens': cache_data['usage']['output_tokens']
+                })()
+
+        return MockMessage(cache_data)
 
     def _generate_mock_report(self, current_date: str) -> Dict:
         """Generate mock report for dry run mode"""

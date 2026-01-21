@@ -38,10 +38,16 @@ class Settings(BaseSettings):
     max_reports: int = 25
     search_days_back: int = 7
 
+    # Testing and iteration modes
+    cache_mode: bool = False  # Save API responses to cache for reuse
+    replay_mode: bool = False  # Use cached responses instead of API calls
+    cache_file: str = "cache/api_response.json"  # Path to cache file
+
     # Output directories
     output_dir: Path = Path("output")
     reports_dir: Path = Path("reports")
     logs_dir: Path = Path("logs")
+    cache_dir: Path = Path("cache")
 
     class Config:
         env_file = ".env"
@@ -75,7 +81,7 @@ class Settings(BaseSettings):
 
     def create_directories(self):
         """Create necessary directories if they don't exist"""
-        for directory in [self.output_dir, self.reports_dir, self.logs_dir]:
+        for directory in [self.output_dir, self.reports_dir, self.logs_dir, self.cache_dir]:
             directory.mkdir(exist_ok=True)
 
 
