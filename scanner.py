@@ -117,15 +117,20 @@ class ReportScanner:
             self.logger.info("DRY RUN MODE - Skipping actual API call")
             return self._generate_mock_report(current_date)
 
-        # Call Claude API
+        # Call Claude API with web search enabled
         try:
-            self.logger.info("Calling Claude API...")
+            self.logger.info("Calling Claude API with web search...")
             message = self.client.messages.create(
                 model=self.settings.anthropic_model,
                 max_tokens=self.settings.max_tokens,
                 messages=[{
                     "role": "user",
                     "content": prompt
+                }],
+                # Enable web search tool
+                tools=[{
+                    "type": "web_search_20250305",
+                    "name": "web_search"
                 }]
             )
 

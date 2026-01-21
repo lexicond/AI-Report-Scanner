@@ -1,5 +1,7 @@
 # WEEKLY UK GOVERNMENT AI REPORT SCANNER
 
+**CRITICAL INSTRUCTION**: You MUST use the web_search tool to actively search for reports. Do NOT explain that you cannot search - you have web search capability enabled. Execute all searches listed below using the web_search tool.
+
 **MISSION**: Search for substantial reports published in the past 7 days relevant to UK government AI transformation. Focus on reports that senior civil servants, DGs, and No10 would expect coordination teams to have read.
 
 **EXECUTION DATE**: {current_date}
